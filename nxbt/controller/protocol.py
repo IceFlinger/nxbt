@@ -253,7 +253,7 @@ class ControllerProtocol():
         # Setting Report ID to full standard input report ID
         self.report[1] = 0x30
         self.set_standard_input_report()
-        self.set_imu_data()
+        self.set_standard_imu_data()
 
     def set_standard_input_report(self):
 
@@ -349,7 +349,7 @@ class ControllerProtocol():
         # Subcommand reply
         self.report[15] = 0x40
 
-    def set_imu_data(self):
+    def set_standard_imu_data(self):
 
         if not self.imu_enabled:
             return
@@ -358,6 +358,12 @@ class ControllerProtocol():
                     0xE0, 0xFF, 0x72, 0xFD, 0xF9, 0xFF, 0x0A, 0x10, 0x22, 0x00,
                     0xD5, 0xFF, 0xE0, 0xFF, 0x76, 0xFD, 0xFC, 0xFF, 0x09, 0x10,
                     0x23, 0x00, 0xD5, 0xFF, 0xE0, 0xFF]
+        replace_subarray(self.report, 14, 49, replace_arr=imu_data)
+
+    def set_imu_data(self, imu_data):
+        if not self.imu_enabled:
+            return
+
         replace_subarray(self.report, 14, 49, replace_arr=imu_data)
 
     def spi_read(self, message):
