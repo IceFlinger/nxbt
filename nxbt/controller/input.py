@@ -48,7 +48,12 @@ DIRECT_INPUT_IDLE_PACKET = {
     "Y": False,
     "X": False,
     "B": False,
-    "A": False
+    "A": False,
+    # IMU Data
+    "IMU_DATA": [0x75, 0xFD, 0xFD, 0xFF, 0x09, 0x10, 0x21, 0x00, 0xD5, 0xFF,
+                 0xE0, 0xFF, 0x72, 0xFD, 0xF9, 0xFF, 0x0A, 0x10, 0x22, 0x00,
+                 0xD5, 0xFF, 0xE0, 0xFF, 0x76, 0xFD, 0xFC, 0xFF, 0x09, 0x10,
+                 0x23, 0x00, 0xD5, 0xFF, 0xE0, 0xFF]
 }
 
 
@@ -292,6 +297,9 @@ class InputParser():
             "R_STICK"
         )
 
+        imu_data = controller_input["IMU_DATA"]
+
+
         # Converting binary strings to ints
         upper_byte = int("".join(upper), 2)
         shared_byte = int("".join(shared), 2)
@@ -300,6 +308,7 @@ class InputParser():
         self.protocol.set_button_inputs(upper_byte, shared_byte, lower_byte)
         self.protocol.set_left_stick_inputs(stick_left)
         self.protocol.set_right_stick_inputs(stick_right)
+        self.protocol.set_imu_data(imu_data)
 
         return controller_input
 
